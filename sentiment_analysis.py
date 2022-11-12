@@ -16,8 +16,18 @@ class SentimentAnalysis:
         self.__file = file
         self.__classifications = {'Negative': 'NEGATIVE', 'Positive': 'POSITIVE', 'Neutral': 'POSITIVE'}
 
+
     def run(self):
+        '''
+        Runs the sentiment analysis on the dataset
+        '''
         with open(self.__file, 'r') as f:
             for line in f:
                 sentiment_task = pipeline("sentiment-analysis", model=self.__model, tokenizer=self.__tokenizer)
                 print(self.__classifications[sentiment_task(line)[0]['label']])
+
+
+# TESTS
+if __name__ == '__main__':
+    s = SentimentAnalysis('cardiffnlp/twitter-roberta-base-sentiment-latest', 'tiny_movie_reviews_dataset.txt')
+    s.run()
