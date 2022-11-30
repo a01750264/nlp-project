@@ -14,7 +14,7 @@ class SentimentAnalysis:
         self.__model = AutoModelForSequenceClassification.from_pretrained(model)
         self.__tokenizer = AutoTokenizer.from_pretrained(model)
         self.__file = file
-        self.__classifications = {'Negative': 'NEGATIVE', 'Positive': 'POSITIVE', 'Neutral': 'POSITIVE'}
+        self.__classifications = {'negative': 'NEGATIVE', 'positive': 'POSITIVE', 'neutral': 'POSITIVE'}
 
 
     def run(self):
