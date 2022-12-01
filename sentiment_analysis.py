@@ -11,20 +11,20 @@ class SentimentAnalysis:
         Constructor of the class, receives the model to be used and the data to be analyzed
         '''
         logging.set_verbosity_error()
-        self.__model = AutoModelForSequenceClassification.from_pretrained(model)
-        self.__tokenizer = AutoTokenizer.from_pretrained(model)
-        self.__file = file
-        self.__classifications = {'negative': 'NEGATIVE', 'positive': 'POSITIVE', 'neutral': 'POSITIVE'}
+        self._model = AutoModelForSequenceClassification.from_pretrained(model)
+        self._tokenizer = AutoTokenizer.from_pretrained(model)
+        self._file = file
+        self._classifications = {'negative': 'NEGATIVE', 'positive': 'POSITIVE', 'neutral': 'POSITIVE'}
 
 
     def run(self):
         '''
         Runs the sentiment analysis on the dataset
         '''
-        with open(self.__file, 'r') as f:
+        with open(self._file, 'r') as f:
             for line in f:
-                sentiment_task = pipeline("sentiment-analysis", model=self.__model, tokenizer=self.__tokenizer)
-                print(self.__classifications[sentiment_task(line)[0]['label']])
+                sentiment_task = pipeline("sentiment-analysis", model=self._model, tokenizer=self._tokenizer)
+                print(self._classifications[sentiment_task(line)[0]['label']])
 
 
 # TESTS

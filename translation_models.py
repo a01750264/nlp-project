@@ -12,11 +12,11 @@ class Translations:
         Constructor of the class, receives the file to be translated, the file to evaluate
         the bleu of the translation and the Deepl API key
         '''
-        self.__source_file = source_file
-        self.__target_file = target_file
-        self.__deepl_key = deepl_key
-        self.__deepl_bleu = 0
-        self.__google_bleu = 0
+        self._source_file = source_file
+        self._target_file = target_file
+        self._deepl_key = deepl_key
+        self._deepl_bleu = 0
+        self._google_bleu = 0
 
 
     def deepl_translation(self):
@@ -24,19 +24,18 @@ class Translations:
         Runs the translation with Deepl's translator and computes the average bleu of the
         translations
         '''
-        translator = deepl.Translator(self.__deepl_key)
-        n = 0
-        with open(self.__source_file, 'r', encoding='utf-8') as s:
-            with open(self.__target_file, 'r', encoding='utf-8') as t:
+        translator = deepl.Translator(self._deepl_key)
+        num_lines = 0
+        with open(self._source_file, 'r', encoding='utf-8') as s:
+            with open(self._target_file, 'r', encoding='utf-8') as t:
                 for line in s:
                     ref = [t.readline().split()]
                     translation = translator.translate_text(line, source_lang='ES', target_lang='EN-US')
                     result = str(translation).split()
-                    self.__deepl_bleu += sentence_bleu(ref, result, (1, 0, 0, 0))
-                    n += 1
-                t.close()
-            s.close()
-        print(f'DEEPL_TRANSLATOR: {self.__deepl_bleu/n}')
+                    self._deepl_bleu += sentence_bleu(ref, result, (1, 0, 0, 0))
+                    num_lines += 1
+
+        print(f'DEEPL_TRANSLATOR: {self._deepl_bleu/num_lines}')
 
 
     def google_translation(self):
@@ -45,18 +44,17 @@ class Translations:
         translations
         '''
         translator = Translator()
-        n = 0
-        with open(self.__source_file, 'r', encoding='utf-8') as s:
-            with open(self.__target_file, 'r', encoding='utf-8') as t:
+        num_lines = 0
+        with open(self._source_file, 'r', encoding='utf-8') as s:
+            with open(self._target_file, 'r', encoding='utf-8') as t:
                 for line in s:
                     ref = [t.readline().split()]
                     translation = translator.translate(line, dest='en').text
                     result = translation.split()
-                    self.__google_bleu += sentence_bleu(ref, result, (1, 0, 0, 0))
-                    n += 1
-                t.close()
-            s.close()
-        print(f'GOOGLE_TRANSLATOR: {self.__google_bleu/n}')
+                    self._google_bleu += sentence_bleu(ref, result, (1, 0, 0, 0))
+                    num_lines += 1
+
+        print(f'GOOGLE_TRANSLATOR: {self._google_bleu/num_lines}')
 
         
 # TESTS
